@@ -13,13 +13,16 @@ import org.kde.config as KConfig
 
 Kirigami.ApplicationWindow {
     id: root
-    property int columnWidth: Kirigami.Units.gridUnit * 13
+    property int columnWidth: Kirigami.Units.gridUnit * 15
+    Kirigami.Theme.colorSet: Kirigami.Theme.View
+    Kirigami.Theme.inherit: false
 
     property string pendingDeviceId
     property string pendingPluginConfig
 
-    minimumWidth: Kirigami.Units.gridUnit * 15
+    minimumWidth: Kirigami.Units.gridUnit * 18
     minimumHeight: Kirigami.Units.gridUnit * 15
+    color: Kirigami.Theme.backgroundColor
     wideScreen: width > columnWidth * 5
     pageStack.globalToolBar.canContainHandles: true
     pageStack.globalToolBar.showNavigationButtons: applicationWindow().pageStack.currentIndex > 0 ? Kirigami.ApplicationHeaderStyle.ShowBackButton : 0
@@ -77,7 +80,7 @@ Kirigami.ApplicationWindow {
         id: drawer
         edge: Qt.application.layoutDirection === Qt.RightToLeft ? Qt.RightEdge : Qt.LeftEdge
         modal: Kirigami.Settings.isMobile || (applicationWindow().width < Kirigami.Units.gridUnit * 50 && !collapsed) // Only modal when not collapsed, otherwise collapsed won't show.
-        width: Kirigami.Units.gridUnit * 16
+        width: Kirigami.Units.gridUnit * 18
         onModalChanged: drawerOpen = !modal
 
         Behavior on width {
@@ -86,7 +89,11 @@ Kirigami.ApplicationWindow {
                 easing.type: Easing.InOutQuad
             }
         }
-        Kirigami.Theme.colorSet: Kirigami.Theme.Window
+        Kirigami.Theme.colorSet: Kirigami.Theme.View
+        Kirigami.Theme.inherit: false
+        background: Rectangle {
+            color: Kirigami.Theme.backgroundColor
+        }
 
         handleClosedIcon.source: modal ? null : "sidebar-expand-left"
         handleOpenIcon.source: modal ? null : "sidebar-collapse-left"
@@ -146,6 +153,11 @@ Kirigami.ApplicationWindow {
                 ListView {
                     id: devices
                     Layout.fillWidth: true
+                    leftMargin: Kirigami.Units.smallSpacing
+                    rightMargin: Kirigami.Units.smallSpacing
+                    topMargin: Kirigami.Units.smallSpacing
+                    bottomMargin: Kirigami.Units.smallSpacing
+                    spacing: Kirigami.Units.smallSpacing
                     clip: true
                     activeFocusOnTab: true
                     keyNavigationEnabled: true
@@ -187,9 +199,24 @@ Kirigami.ApplicationWindow {
                         text: Kirigami.MnemonicData.richTextLabel
                         Accessible.name: Kirigami.MnemonicData.plainTextLabel ?? model.name // fallback needed for KF < 6.12
                         width: ListView.view.width
+                        implicitHeight: Kirigami.Units.gridUnit * 3
+                        leftPadding: Kirigami.Units.largeSpacing
+                        rightPadding: Kirigami.Units.largeSpacing
+                        topPadding: Kirigami.Units.smallSpacing
+                        bottomPadding: Kirigami.Units.smallSpacing
                         highlighted: (pageStack.items[0] as DevicePage)?.currentDevice === device
                         Accessible.role: Accessible.PageTab
                         Accessible.description: toolTip
+
+                        background: Rectangle {
+                            radius: Kirigami.Units.cornerRadius
+                            color: delegate.highlighted
+                                ? Kirigami.Theme.highlightColor
+                                : delegate.hovered
+                                    ? Kirigami.ColorUtils.tintWithAlpha(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.08)
+                                    : "transparent"
+                            opacity: delegate.highlighted ? 0.22 : 1
+                        }
 
                         Kirigami.MnemonicData.enabled: enabled && visible
                         Kirigami.MnemonicData.controlType: Kirigami.MnemonicData.MenuItem

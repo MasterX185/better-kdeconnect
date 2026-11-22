@@ -74,6 +74,11 @@ Kirigami.ScrollablePage {
 
     ListView {
         id: pluginsListView
+        spacing: Kirigami.Units.smallSpacing
+        leftMargin: Kirigami.Units.smallSpacing
+        rightMargin: Kirigami.Units.smallSpacing
+        topMargin: Kirigami.Units.smallSpacing
+        bottomMargin: Kirigami.Units.smallSpacing
 
         section.property: "section"
         section.delegate: Kirigami.ListSectionHeader {
@@ -114,10 +119,23 @@ Kirigami.ScrollablePage {
                 icon.name: modelData.iconName
                 highlighted: modelData === sharePlugin && dropArea.containsDrag
                 icon.color: "transparent"
-                width: pluginsListView.width
+                width: pluginsListView.width - pluginsListView.leftMargin - pluginsListView.rightMargin
+                implicitHeight: Kirigami.Units.gridUnit * 3
+                leftPadding: Kirigami.Units.largeSpacing
+                rightPadding: Kirigami.Units.largeSpacing
+                topPadding: Kirigami.Units.smallSpacing
+                bottomPadding: Kirigami.Units.smallSpacing
                 enabled: true
                 hoverEnabled: modelData.clickable
                 focusPolicy: modelData.clickable ? Qt.StrongFocus : Qt.NoFocus
+                background: Rectangle {
+                    radius: Kirigami.Units.cornerRadius
+                    color: pluginDelegate.hovered
+                        ? Kirigami.ColorUtils.tintWithAlpha(Kirigami.Theme.backgroundColor, Kirigami.Theme.highlightColor, 0.12)
+                        : Kirigami.Theme.alternateBackgroundColor
+                    border.width: 1
+                    border.color: Kirigami.ColorUtils.tintWithAlpha(Kirigami.Theme.textColor, Kirigami.Theme.backgroundColor, 0.82)
+                }
                 onClicked: {
                     if (modelData.clickable) {
                         modelData.onClick()
