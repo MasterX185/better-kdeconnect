@@ -13,31 +13,41 @@ import org.kde.kirigamiaddons.formcard as FormCard
 FormCard.FormCardPage {
     id: root
 
+    Kirigami.Theme.colorSet: Kirigami.Theme.View
+    Kirigami.Theme.inherit: false
 
-    Kirigami.Icon {
-        source: "kdeconnect"
-        implicitWidth: Kirigami.Units.iconSizes.huge
-        implicitHeight: Kirigami.Units.iconSizes.huge
-
+    FormCard.FormCard {
+        Layout.fillWidth: true
+        Layout.maximumWidth: Kirigami.Units.gridUnit * 32
         Layout.alignment: Qt.AlignHCenter
-        Layout.topMargin: Kirigami.Units.gridUnit
-    }
+        Layout.topMargin: Kirigami.Units.gridUnit * 2
 
-    Kirigami.Heading {
-        text: i18nc("@title", "No Device Selected")
-        horizontalAlignment: Qt.AlignHCenter
+        ColumnLayout {
+            Layout.fillWidth: true
+            Layout.margins: Kirigami.Units.gridUnit
+            spacing: Kirigami.Units.largeSpacing
 
-        Layout.fillWidth: true
-        Layout.topMargin: Kirigami.Units.largeSpacing
-    }
+            Kirigami.Icon {
+                source: "kdeconnect"
+                implicitWidth: Kirigami.Units.iconSizes.huge
+                implicitHeight: Kirigami.Units.iconSizes.huge
+                Layout.alignment: Qt.AlignHCenter
+            }
 
-    Controls.Label {
-        text: i18nc("@info", "Make sure to install KDE Connect on your other devices.")
-        horizontalAlignment: Qt.AlignHCenter
-        wrapMode: Text.WordWrap
+            Kirigami.Heading {
+                text: i18nc("@title", "No Device Selected")
+                level: 2
+                horizontalAlignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+            }
 
-        Layout.fillWidth: true
-        Layout.topMargin: Kirigami.Units.largeSpacing
+            Controls.Label {
+                text: i18nc("@info", "Make sure to install KDE Connect on your other devices.")
+                horizontalAlignment: Qt.AlignHCenter
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+        }
     }
 
     FormCard.FormHeader {
